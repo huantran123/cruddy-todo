@@ -1,0 +1,31 @@
+{
+  "name": "cruddy-todos",
+  "version": "1.0.0",
+  "description": "A CRUDdy todo app that stores each todo in its own file on the server",
+  "author": "Hack Reactor <curriculum.team@hackreactor.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": "14.13.1",
+    "npm": "6.14.8"
+  },
+  "scripts": {
+    "start": "npx nodemon ./server.js",
+    "clean": "rm -rf datastore/data/* datastore/counter.txt",
+    "lint": "eslint ./",
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "sprintf-js": "^1.1.2",
+    "underscore": "^1.11.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint-config-hackreactor": "https://github.com/reactorcore/eslint-config-hackreactor",
+    "mocha": "^5.2.0",
+    "nodemon": "^2.0.6"
+  }
+}

@@ -90,32 +90,23 @@ exports.update = (id, text, callback) => {
       });
     }
   });
-  // fs.writeFile(exports.counterFile, counterString, (err) => {
-  //   if (err) {
-  //     throw ('error writing counter');
-  //   } else {
-  //     callback(null, counterString);
-  //   }
-  // });
-
-  // var item = items[id];
-  // if (!item) {
-  //   callback(new Error(`No item with id: ${id}`));
-  // } else {
-  //   items[id] = text;
-  //   callback(null, { id, text });
-  // }
 };
 
 exports.delete = (id, callback) => {
-  var item = items[id];
-  delete items[id];
-  if (!item) {
-    // report an error if item not found
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback();
-  }
+  exports.readOne(id, (err, fileData) => {
+    if (err) {
+      callback(new Error(`No item with id: ${id}`));
+    } else {
+      var filePath = path.join(exports.dataDir, `${id}.txt`);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          callback();
+        }
+      });
+    }
+  });
 };
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////

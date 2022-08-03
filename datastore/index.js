@@ -25,14 +25,27 @@ exports.create = (text, callback) => {
       });
     }
   });
-
 };
 
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+  fs.readdir(exports.dataDir, (err, files) => {
+    if (err) {
+      throw err;
+    } else {
+      console.log(files);
+      var todos = [];
+      files.forEach((file) => {
+        var id = file.substring(0, 5);
+        todos.push({id: id, text: id});
+      });
+      callback(null, todos);
+    }
   });
-  callback(null, data);
+  // var data = _.map(items, (text, id) => {
+  //   console.log('items: ', items);
+  //   return { id, text };
+  // });
+  // callback(null, data);
 };
 
 exports.readOne = (id, callback) => {

@@ -32,7 +32,6 @@ exports.readAll = (callback) => {
     if (err) {
       throw err;
     } else {
-      console.log(files);
       var todos = [];
       files.forEach((file) => {
         var id = file.substring(0, 5);
@@ -49,12 +48,30 @@ exports.readAll = (callback) => {
 };
 
 exports.readOne = (id, callback) => {
-  var text = items[id];
-  if (!text) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, { id, text });
-  }
+  fs.readdir(exports.dataDir, (err, files) => {
+    if (err) {
+      throw err;
+    } else {
+      var hasId = false;
+      files.forEach((file) => {
+        var fileId = file.substring(0, 5);
+        if (fileId === id) {
+          hasId = true;
+          var filePath = path.join(exports.dataDir, file);
+          fs.readFile(filePath, (err, fileData) => {
+            if (err) {
+              throw err;
+            } else {
+              callback(null, {id: id, text: fileData.toString()});
+            }
+          });
+        }
+      });
+      if (hasId === false) {
+        callback(new Error(`No item with id: ${id}`));
+      }
+    }
+  });
 };
 
 exports.update = (id, text, callback) => {
